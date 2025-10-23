@@ -1,0 +1,34 @@
+from django.shortcuts import redirect, render
+from .models import MgnregaRecord
+from django.urls import reverse
+
+def dashboard(request):
+    district = request.GET.get("district")
+    category = request.GET.get("category")
+
+    if district and category:
+        url = reverse("district") + f"?district={district}&category={category}"
+        return redirect(url)
+
+    return render(request, "index.html")
+
+
+def district_view(request):
+    district = request.GET.get("district", "").strip().upper()  
+    category = request.GET.get("category") or "employment"
+    fin_year = request.GET.get("fin_year")
+
+    records = MgnregaRecord.objects.filter(district_name=district)
+    if fin_year:
+        records = records.filter(fin_year=fin_year)
+
+    years = MgnregaRecord.objects.filter(district_name=district).values_list('fin_year', flat=True).distinct()
+    all_districts = MgnregaRecord.objects.values_list('district_name', flat=True).distinct()
+
+    return render(request, "district.html", {
+        "district": district,
+        "category": category,
+        "records": records,
+        "years": years,
+        "all_districts": all_districts
+    })

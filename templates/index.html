@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MGNREGA Dashboard - Kerala</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="text-center mb-4">📊 MGNREGA ഡാഷ്ബോർഡ്</h1>
+    <p class="text-center">Select a data category to begin<br><span class="text-muted">ഡാറ്റ വിഭാഗം
+        തിരഞ്ഞെടുക്കുക</span></p>
+
+    <!-- Category Tiles -->
+    <div class="row g-3 justify-content-center">
+      <div class="col-md-4">
+        <a href="?category=employment" class="text-decoration-none">
+          <div class="card text-center shadow-sm h-100 p-3 tile-btn">
+            <h5>Employment & Participation</h5>
+            <p>തൊഴിൽ & പങ്കാളിത്തം</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="?category=budget" class="text-decoration-none">
+          <div class="card text-center shadow-sm h-100 p-3 tile-btn">
+            <h5>Budget & Wages</h5>
+            <p>ബജറ്റ് & വേതനം</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="?category=jobcards" class="text-decoration-none">
+          <div class="card text-center shadow-sm h-100 p-3 tile-btn">
+            <h5>Job Cards & Workers</h5>
+            <p>ജോബ് കാർഡുകളും തൊഴിലാളികളും</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="?category=works" class="text-decoration-none">
+          <div class="card text-center shadow-sm h-100 p-3 tile-btn">
+            <h5>Works & Progress</h5>
+            <p>ജോലികളും പുരോഗതിയും</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="?category=performance" class="text-decoration-none">
+          <div class="card text-center shadow-sm h-100 p-3 tile-btn">
+            <h5>Performance Indicators</h5>
+            <p>പ്രകടന സൂചികകൾ</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- District Selector -->
+    {% if request.GET.category %}
+    <form method="get" action="{% url 'dashboard' %}" class="mt-5">
+      <input type="hidden" name="category" value="{{ request.GET.category }}">
+      <div class="mb-3">
+        <label for="district" class="form-label">District / ജില്ല</label>
+        <select id="district" name="district" class="form-select" required>
+          <option value="">-- Select District --</option>
+          <option value="Thiruvananthapuram">Thiruvananthapuram / തിരുവനന്തപുരം</option>
+          <option value="Kollam">Kollam / കൊല്ലം</option>
+          <option value="Pathanamthitta">Pathanamthitta / പത്തനംതിട്ട</option>
+          <option value="Alappuzha">Alappuzha / ആലപ്പുഴ</option>
+          <option value="Kottayam">Kottayam / കോട്ടയം</option>
+          <option value="Idukki">Idukki / ഇടുക്കി</option>
+          <option value="Ernakulam">Ernakulam / എറണാകുളം</option>
+          <option value="Thrissur">Thrissur / തൃശൂർ</option>
+          <option value="Palakkad">Palakkad / പാലക്കാട്</option>
+          <option value="Malappuram">Malappuram / മലപ്പുറം</option>
+          <option value="Kozhikode">Kozhikode / കോഴിക്കോട്</option>
+          <option value="Wayanad">Wayanad / വയനാട്</option>
+          <option value="Kannur">Kannur / കണ്ണൂർ</option>
+          <option value="Kasaragod">Kasaragod / കാസർഗോഡ്</option>
+        </select>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">🔍 View Dashboard / ഡാഷ്ബോർഡ് കാണുക</button>
+      </div>
+    </form>
+    {% endif %}
+
+    <!-- Optional Glossary -->
+    <div class="text-center mt-4">
+      <a href="" target="_blank" class="btn btn-outline-secondary">📘 Glossary / പദസൂചിക</a>
+    </div>
+  </div>
+<script src="{% static 'js/toggle.js' %}"></script>
+<script>
+  window.onload = suggestDistrict;
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+from django.db import models
+
+class MgnregaRecord(models.Model):
+    fin_year = models.CharField(max_length=10, null=True, blank=True)
+    month = models.CharField(max_length=10, null=True, blank=True)
+    state_code = models.CharField(max_length=10, null=True, blank=True)
+    state_name = models.CharField(max_length=50, null=True, blank=True)
+    district_code = models.CharField(max_length=10, null=True, blank=True)
+    district_name = models.CharField(max_length=50, null=True, blank=True)
+
+    approved_labour_budget = models.FloatField(null=True, blank=True)
+    average_wage_rate = models.FloatField(null=True, blank=True)
+    average_days_employment = models.FloatField(null=True, blank=True)
+    differently_abled_persons_worked = models.IntegerField(null=True, blank=True)
+    material_and_skilled_wages = models.FloatField(null=True, blank=True)
+    completed_works = models.IntegerField(null=True, blank=True)
+    gps_with_nil_exp = models.IntegerField(null=True, blank=True)
+    ongoing_works = models.IntegerField(null=True, blank=True)
+    central_liability_persondays = models.FloatField(null=True, blank=True)
+    sc_persondays = models.FloatField(null=True, blank=True)
+    sc_workers_percent = models.FloatField(null=True, blank=True)
+    st_persondays = models.FloatField(null=True, blank=True)
+    st_workers_percent = models.FloatField(null=True, blank=True)
+    total_admin_expenditure = models.FloatField(null=True, blank=True)
+    total_expenditure = models.FloatField(null=True, blank=True)
+    total_households_worked = models.IntegerField(null=True, blank=True)
+    total_individuals_worked = models.IntegerField(null=True, blank=True)
+    active_jobcards = models.IntegerField(null=True, blank=True)
+    active_workers = models.IntegerField(null=True, blank=True)
+    households_100_days = models.IntegerField(null=True, blank=True)
+    jobcards_issued = models.IntegerField(null=True, blank=True)
+    total_workers = models.IntegerField(null=True, blank=True)
+    total_works_takenup = models.IntegerField(null=True, blank=True)
+    wages = models.FloatField(null=True, blank=True)
+    women_persondays = models.FloatField(null=True, blank=True)
+    percent_category_b_works = models.FloatField(null=True, blank=True)
+    percent_agriculture_expenditure = models.FloatField(null=True, blank=True)
+    percent_nrm_expenditure = models.FloatField(null=True, blank=True)
+    percent_payments_within_15_days = models.FloatField(null=True, blank=True)
+    remarks = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.district_name} - {self.month} {self.fin_year}"

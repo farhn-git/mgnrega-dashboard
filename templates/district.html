@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ district }} - MGNREGA {{ category|title }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'css/dashboard-style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h2 class="text-center mb-4">
+      📍 {{ district }} - <span data-section="{{ category }}">{{ category|title }}</span>
+    </h2>
+
+    <div class="text-end mb-3">
+      <button id="langToggle" onclick="toggleLanguage()" class="btn btn-outline-secondary">Switch to Malayalam</button>
+    </div>
+
+    <form method="get" class="mb-4 text-center">
+      <input type="hidden" name="category" value="{{ category }}">
+      {% if request.GET.fin_year %}
+      <input type="hidden" name="fin_year" value="{{ request.GET.fin_year }}">
+      {% endif %}
+
+      <label for="district" class="form-label fw-bold">Change District:</label>
+      <select name="district" id="district" class="form-select d-inline-block w-auto mx-2">
+        {% for d in all_districts %}
+        <option value="{{ d }}" {% if d == district %}selected{% endif %}>{{ d|title }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="btn btn-primary">Go</button>
+    </form>
+
+    <!-- Category Navbar -->
+    <div class="text-center mb-4">
+      <div class="btn-group" role="group">
+        <a href="?district={{ district }}&category=employment" class="btn btn-outline-primary {% if category == 'employment' %}active{% endif %}">
+          <span data-section="employment">Employment & Participation</span>
+        </a>
+        <a href="?district={{ district }}&category=budget" class="btn btn-outline-primary {% if category == 'budget' %}active{% endif %}">
+          <span data-section="budget">Budget & Wages</span>
+        </a>
+        <a href="?district={{ district }}&category=jobcards" class="btn btn-outline-primary {% if category == 'jobcards' %}active{% endif %}">
+          <span data-section="jobcards">Job Cards & Workers</span>
+        </a>
+        <a href="?district={{ district }}&category=works" class="btn btn-outline-primary {% if category == 'works' %}active{% endif %}">
+          <span data-section="works">Works & Progress</span>
+        </a>
+        <a href="?district={{ district }}&category=performance" class="btn btn-outline-primary {% if category == 'performance' %}active{% endif %}">
+          <span data-section="performance">Performance Indicators</span>
+        </a>
+      </div>
+    </div>
+
+    {% if records %}
+    {% for record in records %}
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ record.month }} {{ record.fin_year }}</h5>
+
+        {% if category == "employment" %}
+        <p><span class="field-label" data-label="total_households_worked">Total Households Worked</span>: {{ record.total_households_worked|default:"0" }}</p>
+        <p><span class="field-label" data-label="total_individuals_worked">Total Individuals Worked</span>: {{ record.total_individuals_worked|default:"0" }}</p>
+        <p><span class="field-label" data-label="average_days_employment">Average Days of Employment</span>: {{ record.average_days_employment|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="women_persondays">Women Persondays</span>: {{ record.women_persondays|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="sc_persondays">SC Persondays</span>: {{ record.sc_persondays|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="st_persondays">ST Persondays</span>: {{ record.st_persondays|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="sc_workers_percent">SC Workers %</span>: {{ record.sc_workers_percent|floatformat:2|default:"0.00" }}%</p>
+        <p><span class="field-label" data-label="st_workers_percent">ST Workers %</span>: {{ record.st_workers_percent|floatformat:2|default:"0.00" }}%</p>
+        <p><span class="field-label" data-label="differently_abled_persons_worked">Differently Abled Worked</span>: {{ record.differently_abled_persons_worked|default:"0" }}</p>
+        <p><span class="field-label" data-label="households_100_days">100 Days Households</span>: {{ record.households_100_days|default:"0" }}</p>
+
+        {% elif category == "budget" %}
+        <p><span class="field-label" data-label="approved_labour_budget">Approved Labour Budget</span>: ₹{{ record.approved_labour_budget|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="average_wage_rate">Average Wage Rate</span>: ₹{{ record.average_wage_rate|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="material_and_skilled_wages">Material & Skilled Wages</span>: ₹{{ record.material_and_skilled_wages|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="wages">Total Wages</span>: ₹{{ record.wages|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="total_admin_expenditure">Admin Expenditure</span>: ₹{{ record.total_admin_expenditure|floatformat:2|default:"0.00" }}</p>
+        <p><span class="field-label" data-label="total_expenditure">Total Expenditure</span>: ₹{{ record.total_expenditure|floatformat:2|default:"0.00" }}</p>
+
+        {% elif category == "jobcards" %}
+        <p><span class="field-label" data-label="active_jobcards">Active Job Cards</span>: {{ record.active_jobcards|default:"0" }}</p>
+        <p><span class="field-label" data-label="active_workers">Active Workers</span>: {{ record.active_workers|default:"0" }}</p>
+        <p><span class="field-label" data-label="jobcards_issued">Job Cards Issued</span>: {{ record.jobcards_issued|default:"0" }}</p>
+        <p><span class="field-label" data-label="total_workers">Total Workers</span>: {{ record.total_workers|default:"0" }}</p>
+
+        {% elif category == "works" %}
+        <p><span class="field-label" data-label="completed_works">Completed Works</span>: {{ record.completed_works|default:"0" }}</p>
+        <p><span class="field-label" data-label="ongoing_works">Ongoing Works</span>: {{ record.ongoing_works|default:"0" }}</p>
+        <p><span class="field-label" data-label="total_works_takenup">Works Taken Up</span>: {{ record.total_works_takenup|default:"0" }}</p>
+        <p><span class="field-label" data-label="gps_with_nil_exp">GPs with NIL Expenditure</span>: {{ record.gps_with_nil_exp|default:"0" }}</p>
+        <p><span class="field-label" data-label="central_liability_persondays">Central Liability Persondays</span>: {{ record.central_liability_persondays|floatformat:2|default:"0.00" }}</p>
+
+        {% elif category == "performance" %}
+        <p><span class="field-label" data-label="percent_category_b_works">% Category B Works</span>: {{ record.percent_category_b_works|floatformat:2|default:"0.00" }}%</p>
+        <p><span class="field-label" data-label="percent_agriculture_expenditure">% Agriculture Expenditure</span>: {{ record.percent_agriculture_expenditure|floatformat:2|default:"0.00" }}%</p>
+        <p><span class="field-label" data-label="percent_nrm_expenditure">% NRM Expenditure</span>: {{ record.percent_nrm_expenditure|floatformat:2|default:"0.00" }}%</p>
+                <p><span class="field-label" data-label="percent_payments_within_15_days">% Payments Within 15 Days</span>: {{ record.percent_payments_within_15_days|floatformat:2|default:"0.00" }}%</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-center text-danger">⚠️ No {{ category|title }} data found for {{ district }}.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">← Back to Home</a>
+    </div>
+  </div>
+
+  <script src="{% static 'js/toggle.js' %}"></script>
+</body>
+</html>
