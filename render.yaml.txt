@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mgnrega-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn mgnrega_dashboard.wsgi
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://mgnrega_db_user:xoJLgJffRpPA72yhmuBkCPrcgBqhAukA@dpg-d3t86u1bh1hs73a9jro0-a/mgnrega_db
+      - key: SECRET_KEY
+        value: 8(pijb43m7$_2mlawm6t-bse74!orock5i!s38n+@s4@erxy#8
+      - key: DEBUG
+        value: False
+    postDeployCommand: |
+      python manage.py migrate
+      python manage.py collectstatic --noinput
