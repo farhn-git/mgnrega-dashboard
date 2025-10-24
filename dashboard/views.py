@@ -48,8 +48,6 @@ def district_view(request):
         logging.error(f"District view error: {e}")
         raise
 
-
-
 def run_migrations(request):
     call_command('migrate')
     return HttpResponse("Migrations applied.")
