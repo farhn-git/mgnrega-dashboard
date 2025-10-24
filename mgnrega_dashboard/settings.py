@@ -74,9 +74,8 @@ WSGI_APPLICATION = 'mgnrega_dashboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import dj_database_url
+import dj_database_url # type: ignore
 
-import dj_database_url
 
 if os.environ.get('DATABASE_URL'):
     DATABASES = {

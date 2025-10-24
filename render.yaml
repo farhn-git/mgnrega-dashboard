@@ -12,6 +12,4 @@ services:
         value: 8(pijb43m7$_2mlawm6t-bse74!orock5i!s38n+@s4@erxy#8
       - key: DEBUG
         value: False
-    postDeployCommand: |
-      python manage.py migrate
-      python manage.py collectstatic --noinput
+    postDeployCommand: python manage.py postdeploy
