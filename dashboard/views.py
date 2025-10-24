@@ -19,22 +19,30 @@ def dashboard(request):
         raise
 
 
+import logging
+
 def district_view(request):
-    district = request.GET.get("district", "").strip().upper()  
-    category = request.GET.get("category") or "employment"
-    fin_year = request.GET.get("fin_year")
+    try:
+        district = request.GET.get("district", "").strip().upper()
+        category = request.GET.get("category") or "employment"
+        fin_year = request.GET.get("fin_year")
 
-    records = MgnregaRecord.objects.filter(district_name=district)
-    if fin_year:
-        records = records.filter(fin_year=fin_year)
+        logging.error(f"District view called with: district={district}, category={category}, fin_year={fin_year}")
 
-    years = MgnregaRecord.objects.filter(district_name=district).values_list('fin_year', flat=True).distinct()
-    all_districts = MgnregaRecord.objects.values_list('district_name', flat=True).distinct()
+        records = MgnregaRecord.objects.filter(district_name=district)
+        if fin_year:
+            records = records.filter(fin_year=fin_year)
 
-    return render(request, "district.html", {
-        "district": district,
-        "category": category,
-        "records": records,
-        "years": years,
-        "all_districts": all_districts
-    })
+        years = MgnregaRecord.objects.filter(district_name=district).values_list('fin_year', flat=True).distinct()
+        all_districts = MgnregaRecord.objects.values_list('district_name', flat=True).distinct()
+
+        return render(request, "district.html", {
+            "district": district,
+            "category": category,
+            "records": records,
+            "years": years,
+            "all_districts": all_districts
+        })
+    except Exception as e:
+        logging.error(f"District view error: {e}")
+        raise
