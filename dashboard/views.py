@@ -53,3 +53,13 @@ def district_view(request):
 def load_records(request):
     call_command('loaddata', 'records.json')
     return HttpResponse("✅ Records loaded into Render DB.")
+
+from django.http import HttpResponse
+from django.core.management import call_command
+
+def sync_data(request):
+    try:
+        call_command('sync_mgnrega_data')
+        return HttpResponse("✅ MGNREGA data synced from API and CSV.")
+    except Exception as e:
+        return HttpResponse(f"❌ Sync failed:<br><pre>{str(e)}</pre>")
