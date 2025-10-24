@@ -50,3 +50,6 @@ def district_view(request):
         raise
 
 
+def load_records(request):
+    call_command('loaddata', 'records.json')
+    return HttpResponse("✅ Records loaded into Render DB.")
