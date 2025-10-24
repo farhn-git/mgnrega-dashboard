@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render
 from .models import MgnregaRecord
 from django.urls import reverse
-
+from django.http import HttpResponse
+from django.core.management import call_command
 
 def dashboard(request):
     try:
@@ -46,3 +47,9 @@ def district_view(request):
     except Exception as e:
         logging.error(f"District view error: {e}")
         raise
+
+
+
+def run_migrations(request):
+    call_command('migrate')
+    return HttpResponse("Migrations applied.")
