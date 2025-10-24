@@ -3,9 +3,7 @@ from .models import MgnregaRecord
 from django.urls import reverse
 from django.http import HttpResponse
 from django.core.management import call_command
-from django.http import HttpResponse
-from django.core.management import call_command
-import io
+
 
 def dashboard(request):
     try:
@@ -52,8 +50,3 @@ def district_view(request):
         raise
 
 
-
-def run_migrations(request):
-    out = io.StringIO()
-    call_command('migrate', stdout=out)
-    return HttpResponse(f"Migrations applied:<br><pre>{out.getvalue()}</pre>")
