@@ -2,15 +2,21 @@ from django.shortcuts import redirect, render
 from .models import MgnregaRecord
 from django.urls import reverse
 
+
 def dashboard(request):
-    district = request.GET.get("district")
-    category = request.GET.get("category")
+    try:
+        district = request.GET.get("district")
+        category = request.GET.get("category")
 
-    if district and category:
-        url = reverse("district") + f"?district={district}&category={category}"
-        return redirect(url)
+        if district and category:
+            url = reverse("district") + f"?district={district}&category={category}"
+            return redirect(url)
 
-    return render(request, "index.html")
+        return render(request, "index.html")
+    except Exception as e:
+        import logging
+        logging.error(f"Dashboard view error: {e}")
+        raise
 
 
 def district_view(request):
